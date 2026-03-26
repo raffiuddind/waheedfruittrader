@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.waheedfruittrader.mapper.TransactionMapper">
+
+    <resultMap id="TransactionResultMap" type="com.waheedfruittrader.model.entity.Transaction">
+        <id property="id" column="id"/>
+        <result property="transactionNumber" column="transaction_number"/>
+        <result property="type" column="type"/>
+        <result property="status" column="status"/>
+        <result property="customerId" column="customer_id"/>
+        <result property="supplierId" column="supplier_id"/>
+        <result property="subtotal" column="subtotal"/>
+        <result property="discountAmount" column="discount_amount"/>
+        <result property="taxAmount" column="tax_amount"/>
+        <result property="totalAmount" column="total_amount"/>
+        <result property="paidAmount" column="paid_amount"/>
+        <result property="dueAmount" column="due_amount"/>
+        <result property="paymentMethod" column="payment_method"/>
+        <result property="notes" column="notes"/>
+        <result property="transactionDate" column="transaction_date"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+        <result property="createdBy" column="created_by"/>
+        <result property="customerName" column="customer_name"/>
+        <result property="supplierName" column="supplier_name"/>
+    </resultMap>
+
+    <resultMap id="TransactionItemResultMap" type="com.waheedfruittrader.model.entity.TransactionItem">
+        <id property="id" column="id"/>
+        <result property="transactionId" column="transaction_id"/>
+        <result property="fruitId" column="fruit_id"/>
+        <result property="fruitName" column="fruit_name"/>
+        <result property="unit" column="unit"/>
+        <result property="quantity" column="quantity"/>
+        <result property="unitPrice" column="unit_price"/>
+        <result property="totalPrice" column="total_price"/>
+        <result property="discountPercent" column="discount_percent"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="TransactionResultMap">
+        SELECT t.*, c.name as customer_name, s.name as supplier_name
+        FROM transactions t
+        LEFT JOIN customers c ON t.customer_id = c.id
+        LEFT JOIN suppliers s ON t.supplier_id = s.id
+        ORDER BY t.transaction_date DESC
+    </select>
+
+    <select id="findBySearch" resultMap="TransactionResultMap">
+        SELECT t.*, c.name as customer_name, s.name as supplier_name
+        FROM transactions t
+        LEFT JOIN customers c ON t.customer_id = c.id
+        LEFT JOIN suppliers s ON t.supplier_id = s.id
+        <where>
+            <if test="type != null and type != ''">AND t.type = #{type}</if>
+            <if test="status != null and status != ''">AND t.status = #{status}</if>
+            <if test="customerId != null">AND t.customer_id = #{customerId}</if>
+            <if test="supplierId != null">AND t.supplier_id = #{supplierId}</if>
+            <if test="startDate != null">AND t.transaction_date &gt;= #{startDate}</if>
+            <if test="endDate != null">AND t.transaction_date &lt;= #{endDate}</if>
+        </where>
+        ORDER BY t.transaction_date DESC
+    </select>
+
+    <select id="findById" resultMap="TransactionResultMap">
+        SELECT t.*, c.name as customer_name, s.name as supplier_name
+        FROM transactions t
+        LEFT JOIN customers c ON t.customer_id = c.id
+        LEFT JOIN suppliers s ON t.supplier_id = s.id
+        WHERE t.id = #{id}
+    </select>
+
+    <select id="findByTransactionNumber" resultMap="TransactionResultMap">
+        SELECT t.*, c.name as customer_name, s.name as supplier_name
+        FROM transactions t
+        LEFT JOIN customers c ON t.customer_id = c.id
+        LEFT JOIN suppliers s ON t.supplier_id = s.id
+        WHERE t.transaction_number = #{transactionNumber}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO transactions (transaction_number, type, status, customer_id, supplier_id,
+                                  subtotal, discount_amount, tax_amount, total_amount,
+                                  paid_amount, due_amount, payment_method, notes,
+                                  transaction_date, created_at, updated_at, created_by)
+        VALUES (#{transactionNumber}, #{type}, #{status}, #{customerId}, #{supplierId},
+                #{subtotal}, #{discountAmount}, #{taxAmount}, #{totalAmount},
+                #{paidAmount}, #{dueAmount}, #{paymentMethod}, #{notes},
+                #{transactionDate}, NOW(), NOW(), #{createdBy})
+    </insert>
+
+    <update id="update">
+        UPDATE transactions SET
+            status = #{status},
+            subtotal = #{subtotal},
+            discount_amount = #{discountAmount},
+            tax_amount = #{taxAmount},
+            total_amount = #{totalAmount},
+            paid_amount = #{paidAmount},
+            due_amount = #{dueAmount},
+            payment_method = #{paymentMethod},
+            notes = #{notes},
+            updated_at = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM transactions WHERE id = #{id}
+    </delete>
+
+    <insert id="insertItem" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO transaction_items (transaction_id, fruit_id, fruit_name, unit,
+                                       quantity, unit_price, total_price, discount_percent)
+        VALUES (#{transactionId}, #{fruitId}, #{fruitName}, #{unit},
+                #{quantity}, #{unitPrice}, #{totalPrice}, #{discountPercent})
+    </insert>
+
+    <select id="findItemsByTransactionId" resultMap="TransactionItemResultMap">
+        SELECT ti.*, f.name as fruit_name, f.unit
+        FROM transaction_items ti
+        JOIN fruits f ON ti.fruit_id = f.id
+        WHERE ti.transaction_id = #{transactionId}
+    </select>
+
+    <delete id="deleteItemsByTransactionId">
+        DELETE FROM transaction_items WHERE transaction_id = #{transactionId}
+    </delete>
+
+    <select id="generateTransactionNumber" resultType="String">
+        SELECT CONCAT(#{type}, '-', DATE_FORMAT(NOW(), '%Y%m'), '-',
+               LPAD(IFNULL(MAX(CAST(SUBSTRING_INDEX(transaction_number, '-', -1) AS UNSIGNED)), 0) + 1, 4, '0'))
+        FROM transactions
+        WHERE type = #{type} AND DATE_FORMAT(transaction_date, '%Y%m') = DATE_FORMAT(NOW(), '%Y%m')
+    </select>
+
+</mapper>

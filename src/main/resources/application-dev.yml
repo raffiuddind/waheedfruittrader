@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/waheed_fruit_trader_dev?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: root
+    password: root
+
+  flyway:
+    clean-on-validation-error: false
+
+logging:
+  level:
+    com.waheedfruittrader: DEBUG
+    org.mybatis: DEBUG
+    org.springframework.security: DEBUG

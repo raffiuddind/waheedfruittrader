@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.waheedfruittrader.mapper.UserMapper">
+
+    <resultMap id="UserResultMap" type="com.waheedfruittrader.model.entity.User">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="fullName" column="full_name"/>
+        <result property="email" column="email"/>
+        <result property="phone" column="phone"/>
+        <result property="active" column="active"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+        <result property="lastLogin" column="last_login"/>
+    </resultMap>
+
+    <resultMap id="RoleResultMap" type="com.waheedfruittrader.model.entity.Role">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="UserResultMap">
+        SELECT * FROM users ORDER BY full_name
+    </select>
+
+    <select id="findById" resultMap="UserResultMap">
+        SELECT * FROM users WHERE id = #{id}
+    </select>
+
+    <select id="findByUsername" resultMap="UserResultMap">
+        SELECT * FROM users WHERE username = #{username}
+    </select>
+
+    <select id="findByEmail" resultMap="UserResultMap">
+        SELECT * FROM users WHERE email = #{email}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO users (username, password, full_name, email, phone, active, created_at, updated_at)
+        VALUES (#{username}, #{password}, #{fullName}, #{email}, #{phone}, #{active}, NOW(), NOW())
+    </insert>
+
+    <update id="update">
+        UPDATE users SET
+            full_name = #{fullName},
+            email = #{email},
+            phone = #{phone},
+            active = #{active},
+            updated_at = NOW()
+            <if test="password != null and password != ''">, password = #{password}</if>
+            <if test="lastLogin != null">, last_login = #{lastLogin}</if>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM users WHERE id = #{id}
+    </delete>
+
+    <select id="findRolesByUserId" resultMap="RoleResultMap">
+        SELECT r.* FROM roles r
+        JOIN user_roles ur ON r.id = ur.role_id
+        WHERE ur.user_id = #{userId}
+    </select>
+
+    <insert id="insertUserRole">
+        INSERT INTO user_roles (user_id, role_id) VALUES (#{userId}, #{roleId})
+    </insert>
+
+    <delete id="deleteUserRoles">
+        DELETE FROM user_roles WHERE user_id = #{userId}
+    </delete>
+
+    <select id="findAllRoles" resultMap="RoleResultMap">
+        SELECT * FROM roles ORDER BY name
+    </select>
+
+    <select id="findRoleByName" resultMap="RoleResultMap">
+        SELECT * FROM roles WHERE name = #{name}
+    </select>
+
+</mapper>

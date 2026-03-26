@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.waheedfruittrader.mapper.ReportMapper">
+
+    <select id="getTotalSalesByDateRange" resultType="java.math.BigDecimal">
+        SELECT IFNULL(SUM(total_amount), 0)
+        FROM transactions
+        WHERE type = 'SALE' AND status != 'CANCELLED'
+        AND transaction_date BETWEEN #{startDate} AND #{endDate}
+    </select>
+
+    <select id="getTotalPurchasesByDateRange" resultType="java.math.BigDecimal">
+        SELECT IFNULL(SUM(total_amount), 0)
+        FROM transactions
+        WHERE type = 'PURCHASE' AND status != 'CANCELLED'
+        AND transaction_date BETWEEN #{startDate} AND #{endDate}
+    </select>
+
+    <select id="getSalesByFruit" resultType="map">
+        SELECT f.name as fruit_name, f.unit,
+               SUM(ti.quantity) as total_quantity,
+               SUM(ti.total_price) as total_revenue
+        FROM transaction_items ti
+        JOIN fruits f ON ti.fruit_id = f.id
+        JOIN transactions t ON ti.transaction_id = t.id
+        WHERE t.type = 'SALE' AND t.status != 'CANCELLED'
+        AND t.transaction_date BETWEEN #{startDate} AND #{endDate}
+        GROUP BY f.id, f.name, f.unit
+        ORDER BY total_revenue DESC
+    </select>
+
+    <select id="getTopCustomers" resultType="map">
+        SELECT c.name as customer_name, c.phone,
+               COUNT(t.id) as transaction_count,
+               SUM(t.total_amount) as total_amount
+        FROM transactions t
+        JOIN customers c ON t.customer_id = c.id
+        WHERE t.type = 'SALE' AND t.status != 'CANCELLED'
+        AND t.transaction_date BETWEEN #{startDate} AND #{endDate}
+        GROUP BY c.id, c.name, c.phone
+        ORDER BY total_amount DESC
+        LIMIT #{limit}
+    </select>
+
+    <select id="getTopSuppliers" resultType="map">
+        SELECT s.name as supplier_name, s.phone,
+               COUNT(t.id) as transaction_count,
+               SUM(t.total_amount) as total_amount
+        FROM transactions t
+        JOIN suppliers s ON t.supplier_id = s.id
+        WHERE t.type = 'PURCHASE' AND t.status != 'CANCELLED'
+        AND t.transaction_date BETWEEN #{startDate} AND #{endDate}
+        GROUP BY s.id, s.name, s.phone
+        ORDER BY total_amount DESC
+        LIMIT #{limit}
+    </select>
+
+    <select id="getDailySalesTrend" resultType="map">
+        SELECT DATE(transaction_date) as sale_date,
+               SUM(total_amount) as total_sales,
+               COUNT(*) as transaction_count
+        FROM transactions
+        WHERE type = 'SALE' AND status != 'CANCELLED'
+        AND transaction_date BETWEEN #{startDate} AND #{endDate}
+        GROUP BY DATE(transaction_date)
+        ORDER BY sale_date
+    </select>
+
+    <select id="getInventorySummary" resultType="map">
+        SELECT f.name as fruit_name, f.unit,
+               IFNULL(SUM(i.quantity), 0) as total_quantity,
+               f.selling_price,
+               CASE WHEN IFNULL(SUM(i.quantity), 0) = 0 THEN 'OUT_OF_STOCK'
+                    WHEN IFNULL(SUM(i.quantity), 0) &lt;= MIN(i.low_stock_threshold) THEN 'LOW_STOCK'
+                    ELSE 'IN_STOCK' END as stock_status
+        FROM fruits f
+        LEFT JOIN inventory i ON f.id = i.fruit_id
+        WHERE f.active = true
+        GROUP BY f.id, f.name, f.unit, f.selling_price
+        ORDER BY f.name
+    </select>
+
+    <select id="getDashboardMetrics" resultType="map">
+        SELECT
+            (SELECT IFNULL(SUM(total_amount), 0) FROM transactions
+             WHERE type = 'SALE' AND status != 'CANCELLED'
+             AND DATE(transaction_date) = CURDATE()) as today_sales,
+            (SELECT IFNULL(SUM(total_amount), 0) FROM transactions
+             WHERE type = 'PURCHASE' AND status != 'CANCELLED'
+             AND DATE(transaction_date) = CURDATE()) as today_purchases,
+            (SELECT COUNT(*) FROM transactions WHERE status = 'PENDING') as pending_transactions,
+            (SELECT COUNT(*) FROM customers WHERE active = true) as total_customers,
+            (SELECT COUNT(*) FROM suppliers WHERE active = true) as total_suppliers,
+            (SELECT COUNT(*) FROM fruits WHERE active = true) as total_fruits,
+            (SELECT COUNT(*) FROM inventory WHERE quantity &lt;= low_stock_threshold) as low_stock_alerts
+    </select>
+
+</mapper>

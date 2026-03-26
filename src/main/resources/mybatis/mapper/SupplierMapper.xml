@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.waheedfruittrader.mapper.SupplierMapper">
+
+    <resultMap id="SupplierResultMap" type="com.waheedfruittrader.model.entity.Supplier">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="phone" column="phone"/>
+        <result property="email" column="email"/>
+        <result property="address" column="address"/>
+        <result property="city" column="city"/>
+        <result property="notes" column="notes"/>
+        <result property="outstandingBalance" column="outstanding_balance"/>
+        <result property="active" column="active"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="SupplierResultMap">
+        SELECT * FROM suppliers ORDER BY name
+    </select>
+
+    <select id="findBySearch" resultMap="SupplierResultMap">
+        SELECT * FROM suppliers
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND (name LIKE CONCAT('%', #{keyword}, '%')
+                OR phone LIKE CONCAT('%', #{keyword}, '%')
+                OR email LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+            <if test="active != null">
+                AND active = #{active}
+            </if>
+        </where>
+        ORDER BY name
+    </select>
+
+    <select id="findById" resultMap="SupplierResultMap">
+        SELECT * FROM suppliers WHERE id = #{id}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO suppliers (name, phone, email, address, city, notes,
+                              outstanding_balance, active, created_at, updated_at)
+        VALUES (#{name}, #{phone}, #{email}, #{address}, #{city}, #{notes},
+                #{outstandingBalance}, #{active}, NOW(), NOW())
+    </insert>
+
+    <update id="update">
+        UPDATE suppliers SET
+            name = #{name},
+            phone = #{phone},
+            email = #{email},
+            address = #{address},
+            city = #{city},
+            notes = #{notes},
+            outstanding_balance = #{outstandingBalance},
+            active = #{active},
+            updated_at = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM suppliers WHERE id = #{id}
+    </delete>
+
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM suppliers
+    </select>
+
+</mapper>

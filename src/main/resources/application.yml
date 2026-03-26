@@ -1,0 +1,80 @@
+spring:
+  application:
+    name: waheed-fruit-trader
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/waheed_fruit_trader?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: ${DB_USERNAME:waheed_user}
+    password: ${DB_PASSWORD:waheed_pass}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      timeout: 2000ms
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Karachi
+    serialization:
+      write-dates-as-timestamps: false
+
+mybatis:
+  mapper-locations: classpath:mybatis/mapper/*.xml
+  type-aliases-package: com.waheedfruittrader.model.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:waheedfruittrader_jwt_secret_key_2024_very_long_secret_string}
+    expiration: 86400000  # 24 hours
+  cors:
+    allowed-origins: ${CORS_ORIGINS:http://localhost:3000,http://localhost:4200}
+
+whatsapp:
+  api-url: https://graph.facebook.com/v17.0
+  api-token: ${WHATSAPP_TOKEN:}
+  phone-number-id: ${WHATSAPP_PHONE_ID:}
+  webhook-verify-token: ${WHATSAPP_WEBHOOK_TOKEN:}
+  enabled: ${WHATSAPP_ENABLED:false}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+
+server:
+  port: ${SERVER_PORT:8080}
+  servlet:
+    context-path: /
+
+logging:
+  level:
+    com.waheedfruittrader: INFO
+    org.mybatis: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
