@@ -1,0 +1,62 @@
+package com.datastructures;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public final class Customer {
+ 
+	final String name;
+	final int age;
+	final List<String> items;
+	Customer(String name,int age, List<String> list)
+	{
+		this.name=name;
+		this.age=age;
+		this.items=list;
+	}
+	
+	public String getName() {
+		return name;
+	}
+
+
+	public int getAge() {
+		return age;
+	}
+
+
+	public List<String> getItems() {
+		return items;
+	}
+	@Override
+	public boolean equals(Object arg0) {
+		// TODO Auto-generated method stub
+		
+		Customer cus = (Customer) arg0;
+		System.out.println(this.hashCode()+" "+cus.hashCode());
+		return this.name.equals(cus.name) && this.age==cus.age;
+	}
+	
+	
+	
+	public static void main(String[] args) {
+		final List<String> items = new ArrayList<>();
+		items.add("1");items.add("2");
+		Customer c1= new Customer("John",20, items);
+		Customer c2= new Customer("John",20, items);
+		items.add("3");
+		Map<Customer, String> customerSet=new HashMap<>();
+		customerSet.put(c1,"verified");
+		customerSet.put(c2,"verified");
+		
+//		customerSet.add(c2,"yg");
+		
+		System.out.println(c1.getItems());
+		
+		
+	}
+ 
+	// getters and setters
+}

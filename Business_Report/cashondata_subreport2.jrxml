@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cashondata_subreport2" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="77375f23-c663-478f-a492-2e5f6b0721fc">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="New Dataset 1" uuid="8eb5aa6c-b133-4c5e-b51a-6feacd20aef4">
+		<queryString language="SQL">
+			<![CDATA[SELECT en.idtbl_expenditure,exp.idexp_amount,en.`EXPENDITURE`,SUM(exp.`EXP_AMOUNT`),exp.exp_date FROM exp_amount exp
+INNER JOIN tbl_expenditure en ON en.idtbl_expenditure=exp.idtbl_expenditure
+WHERE exp.exp_date between '' and '2016/12/12' GROUP BY en.idtbl_expenditure
+ORDER BY exp.exp_date,exp.idexp_amount]]>
+		</queryString>
+		<field name="idtbl_expenditure" class="java.lang.Integer">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="idexp_amount" class="java.lang.Integer">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="EXPENDITURE" class="java.lang.String">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="SUM(exp.`EXP_AMOUNT`)" class="java.lang.Double"/>
+		<field name="exp_date" class="java.lang.String">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<group name="idtbl_expenditure">
+			<groupExpression><![CDATA[$F{idtbl_expenditure}]]></groupExpression>
+		</group>
+	</subDataset>
+	<queryString language="SQL">
+		<![CDATA[SELECT en.idtbl_expenditure,exp.idexp_amount,en.`EXPENDITURE`,SUM(exp.`EXP_AMOUNT`),exp.exp_date FROM exp_amount exp
+INNER JOIN tbl_expenditure en ON en.idtbl_expenditure=exp.idtbl_expenditure
+WHERE exp.exp_date between '' and '2016/12/12' GROUP BY en.idtbl_expenditure
+ORDER BY exp.exp_date,exp.idexp_amount]]>
+	</queryString>
+	<field name="idtbl_expenditure" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="idexp_amount" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="EXPENDITURE" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="SUM(exp.`EXP_AMOUNT`)" class="java.lang.Double"/>
+	<field name="exp_date" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<group name="idtbl_expenditure">
+		<groupExpression><![CDATA[$F{idtbl_expenditure}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="26" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="111" height="20" uuid="aff18737-2f63-48a2-863c-c01eef786a8a"/>
+				<text><![CDATA[idtbl_expenditure]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="111" y="0" width="111" height="20" uuid="3a892001-8f11-4512-aecd-a064343e8416"/>
+				<text><![CDATA[idexp_amount]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="222" y="0" width="111" height="20" uuid="2fbab3b5-ca63-4d0b-8019-cb13ae41e668"/>
+				<text><![CDATA[EXPENDITURE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="333" y="0" width="111" height="20" uuid="ef496f69-2431-4ed4-8d06-9e63fcd13731"/>
+				<text><![CDATA[SUM(exp.`EXP_AMOUNT`)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="444" y="0" width="111" height="20" uuid="8770d822-2369-4418-aa49-7517dc9f992d"/>
+				<text><![CDATA[exp_date]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="111" height="20" uuid="ec608c0f-d86f-44b2-b8fe-bd4e2d4dd198"/>
+				<textFieldExpression><![CDATA[$F{idtbl_expenditure}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="111" y="0" width="111" height="20" uuid="9163df7a-20c1-43e0-a7d6-beec6be1bb32"/>
+				<textFieldExpression><![CDATA[$F{idexp_amount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="222" y="0" width="111" height="20" uuid="3dfa2192-f059-42bd-8ec7-59638582d982"/>
+				<textFieldExpression><![CDATA[$F{EXPENDITURE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="333" y="0" width="111" height="20" uuid="c94f7487-a883-4c9c-874b-54586d6cf547"/>
+				<textFieldExpression><![CDATA[$F{SUM(exp.`EXP_AMOUNT`)}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="444" y="0" width="111" height="20" uuid="96fab92c-0fee-4307-a555-aca95683702e"/>
+				<textFieldExpression><![CDATA[$F{exp_date}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

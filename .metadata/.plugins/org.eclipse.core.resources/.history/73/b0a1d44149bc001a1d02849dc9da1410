@@ -1,0 +1,25 @@
+package com.datastructures;
+
+import java.util.concurrent.ConcurrentHashMap;
+
+public class Test1 {
+
+	public static void main(String[] args) {
+		
+
+	}
+
+}
+
+class A {
+	ConcurrentHashMap<K, V>
+	public synchronized void m1() throws InterruptedException{
+		Thread.sleep(5000);
+	}
+	
+}
+class B {
+	public void w(){
+		super.w();
+	}
+}

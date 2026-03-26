@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="Sample/src"/>
+	<classpathentry kind="src" path="fh/src/main/java"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="D:/business/lib/Bean.jar"/>
+	<classpathentry kind="lib" path="D:/business/lib/commons-beanutils-1.8.2.jar"/>
+	<classpathentry kind="lib" path="D:/business/lib/commons-collections-3.2.1.jar"/>
+	<classpathentry kind="lib" path="D:/business/lib/commons-digester-2.1.jar"/>
+	<classpathentry kind="lib" path="D:/business/lib/commons-javaflow-20060411.jar"/>
+	<classpathentry kind="lib" path="D:/business/lib/commons-logging-1.1.jar"/>
+	<classpathentry kind="lib" path="D:/business/lib/dom4j-1.6.jar"/>
+	<classpathentry kind="lib" path="D:/business/lib/eclipselink.jar"/>
+	<classpathentry kind="lib" path="D:/business/lib/eclipselink-2.3.2.jar"/>
+	<classpathentry kind="lib" path="D:/business/lib/groovy-all-2.0.1.jar"/>
+	<classpathentry kind="lib" path="D:/business/lib/iText-2.1.7.js2.jar"/>
+	<classpathentry kind="lib" path="D:/business/lib/jasperreports-5.6.0.jar"/>
+	<classpathentry kind="lib" path="D:/business/lib/javax.persistence-2.0.3.jar"/>
+	<classpathentry kind="lib" path="D:/business/lib/jcalendar-1.4.jar"/>
+	<classpathentry kind="lib" path="D:/business/lib/log4j-1.2.15.jar"/>
+	<classpathentry kind="lib" path="D:/business/lib/mysql-connector-java-5.1.6-bin.jar"/>
+	<classpathentry kind="lib" path="D:/business/lib/org.eclipse.persistence.jpa.jpql_1.0.1.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

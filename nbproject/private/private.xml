@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
+        <file>
+            <url>src/Fruit/ui/CashOnDate.java</url>
+            <bookmark id="1">
+                <name/>
+                <line>518</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/G:/business/src/Fruit/DAL/TrxDAL.java</file>
+            <file>file:/G:/business/src/Fruit/ui/CustomerStatementForm.java</file>
+            <file>file:/G:/business/src/Fruit/ui/Entry.java</file>
+            <file>file:/G:/business/src/Fruit/ui/LoginFrame.java</file>
+            <file>file:/G:/business/src/Fruit/DAL/ReportDAL.java</file>
+            <file>file:/G:/business/src/Fruit/ui/ProductCreate.java</file>
+            <file>file:/G:/business/src/Fruit/ui/FinalReport.java</file>
+            <file>file:/G:/business/src/Fruit/ui/BalanceSheet.java</file>
+            <file>file:/G:/business/src/Fruit/ui/EditPaid.java</file>
+            <file>file:/G:/business/src/practise/WhAPIMessageSender.java</file>
+            <file>file:/G:/business/src/Fruit/ui/EntryEditForm.java</file>
+            <file>file:/G:/business/src/Fruit/ui/EntryForm.java</file>
+            <file>file:/G:/business/src/Fruit/ui/CustomerRegistration.java</file>
+            <file>file:/G:/business/src/Fruit/ui/InvoiceEditForm.java</file>
+            <file>file:/G:/business/src/config/Config.java</file>
+        </group>
+    </open-files>
+</project-private>

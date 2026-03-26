@@ -1,0 +1,43 @@
+package com.datastructures;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Customer {
+ 
+	String name;
+	int age;
+	
+	Customer(String name,int age)
+	{
+		this.name=name;
+		this.age=age;
+	}
+	public void setName(String name){
+		this.name = name;
+	}
+	@Override
+	public boolean equals(Object arg0) {
+		// TODO Auto-generated method stub
+		Customer cus = (Customer) arg0;
+		return this.name.equals(cus.name) && this.age==cus.age;
+	}
+	@Override
+	public int hashCode() {
+		// TODO Auto-generated method stub
+		return this.age+this.name.hashCode();
+	}
+	public static void main(String[] args) {
+		
+		Customer c1= new Customer("John",20);
+//		Customer c2= new Customer("John",20);
+		
+		Map<Customer, String> customerSet=new HashMap<>();
+		customerSet.put(c1,"verified");
+		c1.setName("Rafi");
+//		customerSet.add(c2);
+		System.out.println(customerSet.get(c1));
+	}
+ 
+	// getters and setters
+}

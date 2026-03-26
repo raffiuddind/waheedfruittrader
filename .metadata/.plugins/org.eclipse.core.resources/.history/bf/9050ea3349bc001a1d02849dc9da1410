@@ -1,0 +1,21 @@
+package com.datastructures;
+
+public class Test1 {
+
+	public static void main(String[] args) {
+		
+
+	}
+
+}
+
+class A{
+	public synchronized void m1() throws InterruptedException{
+		Thread.sleep(5000);
+	}
+}
+class B{
+	public void w(){
+		super.w();
+	}
+}

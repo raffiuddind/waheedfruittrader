@@ -1,0 +1,48 @@
+package com.datastructures;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
+import com.sun.java.swing.plaf.windows.WindowsTreeUI.CollapsedIcon;
+
+public class Customer {
+ 
+	String name;
+	int age;
+	List<String> items;
+	Customer(String name,int age, List<String> list)
+	{
+		this.name=name;
+		this.age=age;
+		this.items=list;
+	}
+	public void setName(String name){
+		this.name = name;
+	}
+	@Override
+	public boolean equals(Object arg0) {
+		// TODO Auto-generated method stub
+		Customer cus = (Customer) arg0;
+		return this.name.equals(cus.name) && this.age==cus.age;
+	}
+	
+	public static void main(String[] args) {
+		
+		Customer c1= new Customer("John",20);
+		Customer c2= new Customer("John",21);
+		
+		Map<Customer, String> customerSet=new HashMap<>();
+		customerSet.put(c1,"verified");
+		customerSet.put(c2,"verified");
+		c1.setName("Rafi");
+//		customerSet.add(c2,"yg");
+		
+		System.out.println(customerSet.size());
+		
+		
+	}
+ 
+	// getters and setters
+}

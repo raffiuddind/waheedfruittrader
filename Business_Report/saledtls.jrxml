@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="saledtls" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5823213c-d847-463f-abb6-a3813bddd16d">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="New Dataset 1" uuid="a6e8adfc-6bae-4c61-8039-90882f19a0a5">
+		<parameter name="truck" class="java.lang.String">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<queryString>
+			<![CDATA[SELECT c.`NAME`,p.`PRODUCT_NAME`,cat.`CATEGORY_TYPE`,cat.`CAT_ID`,(ttrx.`QNTY`)
+,ttrx.`UNIT_COST`,(ttrx.`TOTAL`),inv.`TRUCK_NO`,inv.INV_DATE,ld.`QNTY`,tr.`T_DATE`
+ FROM ttl_transaction ttrx
+INNER JOIN `transaction` tr ON tr.`T_ID`=ttrx.`T_ID`
+INNER JOIN customer c ON c.`CUSTOMER_ID`=tr.`CUSTOMER_ID`
+
+INNER JOIN load_details ld ON ld.`LOAD_ID`=ttrx.`LOAD_ID`
+INNER JOIN invoice inv ON inv.`INVOICE_ID`=ld.`INVOICE_ID`
+INNER JOIN product_category cat ON cat.`CAT_ID`=ttrx.`CAT_ID`
+INNER JOIN product p ON p.`P_ID`=cat.`P_ID`
+INNER JOIN supplier s ON s.`SUPPLIER_ID`=ld.`SUPPLIER_ID`
+WHERE inv.`TRUCK_NO`=$P{truck} AND ld.`ACTIVE`=true
+GROUP BY ttrx.`TT_ID`,ttrx.`CAT_ID`,ttrx.UNIT_COST]]>
+		</queryString>
+		<field name="NAME" class="java.lang.String">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="PRODUCT_NAME" class="java.lang.String">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="CATEGORY_TYPE" class="java.lang.String">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="CAT_ID" class="java.lang.Integer">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="QNTY" class="java.lang.Integer">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="UNIT_COST" class="java.lang.Integer">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="TOTAL" class="java.lang.Integer">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="TRUCK_NO" class="java.lang.String">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="INV_DATE" class="java.sql.Date">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="T_DATE" class="java.sql.Date">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<variable name="qntysum" class="java.lang.Integer" calculation="Sum">
+			<variableExpression><![CDATA[$F{QNTY}]]></variableExpression>
+		</variable>
+	</subDataset>
+	<parameter name="truck" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT c.`NAME`,p.`PRODUCT_NAME`,cat.`CATEGORY_TYPE`,cat.`CAT_ID`,(ttrx.`QNTY`)
+,ttrx.`UNIT_COST`,(ttrx.`TOTAL`),inv.`TRUCK_NO`,inv.INV_DATE,ld.`QNTY`,tr.`T_DATE`
+ FROM ttl_transaction ttrx
+INNER JOIN `transaction` tr ON tr.`T_ID`=ttrx.`T_ID`
+INNER JOIN customer c ON c.`CUSTOMER_ID`=tr.`CUSTOMER_ID`
+
+INNER JOIN load_details ld ON ld.`LOAD_ID`=ttrx.`LOAD_ID`
+INNER JOIN invoice inv ON inv.`INVOICE_ID`=ld.`INVOICE_ID`
+INNER JOIN product_category cat ON cat.`CAT_ID`=ttrx.`CAT_ID`
+INNER JOIN product p ON p.`P_ID`=cat.`P_ID`
+INNER JOIN supplier s ON s.`SUPPLIER_ID`=ld.`SUPPLIER_ID`
+WHERE inv.`TRUCK_NO`=$P{truck} AND ld.`ACTIVE`=true
+GROUP BY ttrx.`TT_ID`,ttrx.`CAT_ID`,ttrx.UNIT_COST]]>
+	</queryString>
+	<field name="NAME" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PRODUCT_NAME" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CATEGORY_TYPE" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CAT_ID" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="QNTY" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="UNIT_COST" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TOTAL" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TRUCK_NO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="INV_DATE" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="T_DATE" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<textField>
+				<reportElement x="10" y="10" width="100" height="20" uuid="1561fcca-8470-417c-a527-6711caccc305"/>
+				<textFieldExpression><![CDATA[$F{TRUCK_NO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="110" y="10" width="106" height="20" uuid="df9da43d-684b-485b-a7a2-e69636a062e3"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{QNTY}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="462" y="10" width="100" height="20" uuid="b89fdb00-8bdf-47f2-b4cb-633f8e43470e"/>
+				<textFieldExpression><![CDATA[$F{T_DATE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<printWhenExpression><![CDATA[$V{REPORT_COUNT}==1]]></printWhenExpression>
+			<componentElement>
+				<reportElement key="table" style="table" x="0" y="0" width="555" height="80" uuid="54e799bc-6ba4-42b4-baca-6595807be615"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="New Dataset 1" uuid="dcb9d161-681c-4b57-b320-275af3437edf">
+						<datasetParameter name="truck">
+							<datasetParameterExpression><![CDATA[$P{truck}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="110" uuid="c86c515a-cf25-433d-ac00-6c3e536ee813">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="110" height="30" uuid="c92b0f6a-935e-4ef0-acb2-dfa68c18c441"/>
+								<text><![CDATA[NAME]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="table_CH" height="31" rowSpan="1"/>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="110" height="20" uuid="0ea5f1af-b7e4-4f2d-8654-0b52f9e48c33"/>
+								<textFieldExpression><![CDATA[$F{NAME}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="140" uuid="074f22f5-883b-4ecc-a807-7746f04fa2f9">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="140" height="30" uuid="276e6d3c-0c72-45f5-b100-09c8c75bca6a"/>
+								<text><![CDATA[PRODUCT_NAME]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="table_CH" height="31" rowSpan="1"/>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="140" height="20" uuid="fb3a33e9-3513-4156-bb32-b4aee142d133"/>
+								<textFieldExpression><![CDATA[$F{PRODUCT_NAME}+" "+$F{CATEGORY_TYPE}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="75" uuid="4c052623-282d-4edd-b372-1bdcd47c9522">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="75" height="30" uuid="5a88b2bc-569a-4b15-b310-076ad15aa0d4"/>
+								<text><![CDATA[QNTY]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="table_CH" height="31" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="75" height="30" forecolor="#CC0033" uuid="d1e9640b-4fd5-4373-acdc-fdf6d951b57f"/>
+								<textFieldExpression><![CDATA[$V{qntysum}]]></textFieldExpression>
+							</textField>
+						</jr:columnFooter>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="75" height="20" uuid="56218c03-5962-4698-89fa-505f7f52ce14"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$F{QNTY}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="75" uuid="407d5895-2f95-4336-9dda-e6f78131e4a7">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="75" height="30" uuid="2b47a263-677c-4341-81b6-d93d847d6cfe"/>
+								<text><![CDATA[UNIT_COST]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="table_CH" height="31" rowSpan="1"/>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="75" height="20" uuid="3900c09b-e935-4abe-b926-d2b74d4abf5d"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$F{UNIT_COST}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="75" uuid="07c7ea41-56ef-4f03-a28a-1bf848baf70d">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="75" height="30" uuid="47e760d3-c945-48db-abb8-b95598f59d3f"/>
+								<text><![CDATA[TOTAL]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="table_CH" height="31" rowSpan="1"/>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="75" height="20" uuid="30845da8-8cde-49dc-8d44-81daa0be89e0"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$F{TOTAL}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="77" uuid="349aa877-a52f-4695-bf10-0164253e0a26">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="77" height="30" uuid="7289fad8-2f4d-405d-ba17-3e7faa04417c"/>
+								<text><![CDATA[T_DATE]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="table_CH" height="31" rowSpan="1"/>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField pattern="dd/MM/yyyy">
+								<reportElement x="0" y="0" width="77" height="20" uuid="1f2dff85-1fbf-4472-a487-4cec3ced7b06"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$F{T_DATE}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
