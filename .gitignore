@@ -1,0 +1,35 @@
+# Maven
+target/
+*.jar
+*.war
+*.class
+*.tmp
+
+# Spring Boot
+*.log
+logs/
+
+# IDE files
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+*.env.local
+
+# Build output
+dist/
+build/
+
+# Node modules (if any frontend)
+node_modules/
+
+# Application config with secrets
+src/main/resources/application-local.yml

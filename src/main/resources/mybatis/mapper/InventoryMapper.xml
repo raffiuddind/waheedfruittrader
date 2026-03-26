@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.waheedfruittrader.mapper.InventoryMapper">
+
+    <resultMap id="InventoryResultMap" type="com.waheedfruittrader.model.entity.Inventory">
+        <id property="id" column="id"/>
+        <result property="fruitId" column="fruit_id"/>
+        <result property="locationId" column="location_id"/>
+        <result property="quantity" column="quantity"/>
+        <result property="lowStockThreshold" column="low_stock_threshold"/>
+        <result property="lastUpdated" column="last_updated"/>
+        <result property="fruitName" column="fruit_name"/>
+        <result property="locationName" column="location_name"/>
+    </resultMap>
+
+    <resultMap id="LocationResultMap" type="com.waheedfruittrader.model.entity.InventoryLocation">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="address" column="address"/>
+        <result property="description" column="description"/>
+        <result property="active" column="active"/>
+        <result property="createdAt" column="created_at"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="InventoryResultMap">
+        SELECT i.*, f.name as fruit_name, l.name as location_name
+        FROM inventory i
+        JOIN fruits f ON i.fruit_id = f.id
+        JOIN inventory_locations l ON i.location_id = l.id
+        ORDER BY f.name, l.name
+    </select>
+
+    <select id="findLowStock" resultMap="InventoryResultMap">
+        SELECT i.*, f.name as fruit_name, l.name as location_name
+        FROM inventory i
+        JOIN fruits f ON i.fruit_id = f.id
+        JOIN inventory_locations l ON i.location_id = l.id
+        WHERE i.quantity &lt;= i.low_stock_threshold
+        ORDER BY i.quantity ASC
+    </select>
+
+    <select id="findByFruitAndLocation" resultMap="InventoryResultMap">
+        SELECT i.*, f.name as fruit_name, l.name as location_name
+        FROM inventory i
+        JOIN fruits f ON i.fruit_id = f.id
+        JOIN inventory_locations l ON i.location_id = l.id
+        WHERE i.fruit_id = #{fruitId} AND i.location_id = #{locationId}
+    </select>
+
+    <select id="findById" resultMap="InventoryResultMap">
+        SELECT i.*, f.name as fruit_name, l.name as location_name
+        FROM inventory i
+        JOIN fruits f ON i.fruit_id = f.id
+        JOIN inventory_locations l ON i.location_id = l.id
+        WHERE i.id = #{id}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO inventory (fruit_id, location_id, quantity, low_stock_threshold, last_updated)
+        VALUES (#{fruitId}, #{locationId}, #{quantity}, #{lowStockThreshold}, NOW())
+    </insert>
+
+    <update id="update">
+        UPDATE inventory SET
+            quantity = #{quantity},
+            low_stock_threshold = #{lowStockThreshold},
+            last_updated = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <update id="adjustQuantity">
+        INSERT INTO inventory (fruit_id, location_id, quantity, low_stock_threshold, last_updated)
+        VALUES (#{fruitId}, #{locationId}, #{quantity}, 10, NOW())
+        ON DUPLICATE KEY UPDATE
+            quantity = quantity + #{quantity},
+            last_updated = NOW()
+    </update>
+
+    <select id="findAllLocations" resultMap="LocationResultMap">
+        SELECT * FROM inventory_locations ORDER BY name
+    </select>
+
+    <select id="findLocationById" resultMap="LocationResultMap">
+        SELECT * FROM inventory_locations WHERE id = #{id}
+    </select>
+
+    <insert id="insertLocation" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO inventory_locations (name, address, description, active, created_at)
+        VALUES (#{name}, #{address}, #{description}, #{active}, NOW())
+    </insert>
+
+    <update id="updateLocation">
+        UPDATE inventory_locations SET
+            name = #{name},
+            address = #{address},
+            description = #{description},
+            active = #{active}
+        WHERE id = #{id}
+    </update>
+
+</mapper>

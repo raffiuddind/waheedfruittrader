@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.waheedfruittrader.mapper.FruitMapper">
+
+    <resultMap id="FruitResultMap" type="com.waheedfruittrader.model.entity.Fruit">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="type" column="type"/>
+        <result property="category" column="category"/>
+        <result property="unit" column="unit"/>
+        <result property="purchasePrice" column="purchase_price"/>
+        <result property="sellingPrice" column="selling_price"/>
+        <result property="description" column="description"/>
+        <result property="imageUrl" column="image_url"/>
+        <result property="active" column="active"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="FruitResultMap">
+        SELECT * FROM fruits ORDER BY name
+    </select>
+
+    <select id="findBySearch" resultMap="FruitResultMap">
+        SELECT * FROM fruits
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND (name LIKE CONCAT('%', #{keyword}, '%')
+                OR description LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+            <if test="type != null and type != ''">
+                AND type = #{type}
+            </if>
+            <if test="category != null and category != ''">
+                AND category = #{category}
+            </if>
+            <if test="active != null">
+                AND active = #{active}
+            </if>
+        </where>
+        ORDER BY name
+    </select>
+
+    <select id="findById" resultMap="FruitResultMap">
+        SELECT * FROM fruits WHERE id = #{id}
+    </select>
+
+    <select id="findByName" resultMap="FruitResultMap">
+        SELECT * FROM fruits WHERE name = #{name}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO fruits (name, type, category, unit, purchase_price, selling_price,
+                           description, image_url, active, created_at, updated_at)
+        VALUES (#{name}, #{type}, #{category}, #{unit}, #{purchasePrice}, #{sellingPrice},
+                #{description}, #{imageUrl}, #{active}, NOW(), NOW())
+    </insert>
+
+    <update id="update">
+        UPDATE fruits SET
+            name = #{name},
+            type = #{type},
+            category = #{category},
+            unit = #{unit},
+            purchase_price = #{purchasePrice},
+            selling_price = #{sellingPrice},
+            description = #{description},
+            image_url = #{imageUrl},
+            active = #{active},
+            updated_at = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM fruits WHERE id = #{id}
+    </delete>
+
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM fruits
+    </select>
+
+</mapper>
