@@ -108,7 +108,8 @@ public class TransactionService {
             BigDecimal qtyAdjustment = "SALE".equals(dto.getType())
                     ? itemDTO.getQuantity().negate()
                     : itemDTO.getQuantity();
-            inventoryMapper.adjustQuantity(itemDTO.getFruitId(), 1L, qtyAdjustment);
+            Long locationId = itemDTO.getLocationId() != null ? itemDTO.getLocationId() : 1L;
+            inventoryMapper.adjustQuantity(itemDTO.getFruitId(), locationId, qtyAdjustment);
         }
 
         log.info("Created transaction: {}", txNumber);

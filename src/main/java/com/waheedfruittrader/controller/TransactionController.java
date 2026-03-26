@@ -1,5 +1,6 @@
 package com.waheedfruittrader.controller;
 
+import com.waheedfruittrader.mapper.UserMapper;
 import com.waheedfruittrader.model.dto.ApiResponse;
 import com.waheedfruittrader.model.dto.TransactionDTO;
 import com.waheedfruittrader.service.TransactionService;
@@ -11,7 +12,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -27,6 +27,7 @@ import java.util.List;
 public class TransactionController {
 
     private final TransactionService transactionService;
+    private final UserMapper userMapper;
 
     @GetMapping
     @Operation(summary = "Get all transactions with optional filters")
@@ -80,7 +81,10 @@ public class TransactionController {
     }
 
     private Long getUserId(Authentication auth) {
-        if (auth == null) return 1L;
-        return 1L; // Simplified - in production would look up user ID from username
+        if (auth == null || auth.getName() == null) {
+            return null;
+        }
+        var user = userMapper.findByUsername(auth.getName());
+        return user != null ? user.getId() : null;
     }
 }

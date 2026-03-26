@@ -1,6 +1,8 @@
 package com.waheedfruittrader.util;
 
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
 /**
@@ -16,10 +18,10 @@ public final class EncryptionUtil {
     public static String sha256(String input) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(input.getBytes("UTF-8"));
+            byte[] hash = digest.digest(input.getBytes(StandardCharsets.UTF_8));
             return Base64.getEncoder().encodeToString(hash);
-        } catch (Exception e) {
-            throw new RuntimeException("Error computing hash", e);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("SHA-256 algorithm not available", e);
         }
     }
 
@@ -27,13 +29,13 @@ public final class EncryptionUtil {
      * Encode string to Base64.
      */
     public static String base64Encode(String input) {
-        return Base64.getEncoder().encodeToString(input.getBytes());
+        return Base64.getEncoder().encodeToString(input.getBytes(StandardCharsets.UTF_8));
     }
 
     /**
      * Decode Base64 string.
      */
     public static String base64Decode(String encoded) {
-        return new String(Base64.getDecoder().decode(encoded));
+        return new String(Base64.getDecoder().decode(encoded), StandardCharsets.UTF_8);
     }
 }

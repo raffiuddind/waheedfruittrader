@@ -1,4 +1,6 @@
 version: '3.8'
+# NOTE: For production, externalize all credentials to environment variables
+# or use Docker secrets. Do not use these default passwords in production.
 
 services:
   mysql:

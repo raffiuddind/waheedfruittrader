@@ -31,6 +31,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         List<SimpleGrantedAuthority> authorities = user.getRoles() == null
                 ? List.of(new SimpleGrantedAuthority("ROLE_OPERATOR"))
                 : user.getRoles().stream()
+                        .filter(role -> role != null && role.getName() != null)
                         .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName().toUpperCase()))
                         .collect(Collectors.toList());
 

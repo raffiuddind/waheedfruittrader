@@ -41,21 +41,22 @@ public class AuthService {
         String token = jwtTokenProvider.generateToken(userDetails);
 
         User user = userMapper.findByUsername(request.getUsername());
-        if (user != null) {
-            user.setLastLogin(LocalDateTime.now());
-            userMapper.update(user);
+        if (user == null) {
+            throw new UnauthorizedException("User not found after authentication");
         }
+        user.setLastLogin(LocalDateTime.now());
+        userMapper.update(user);
 
-        List<String> roles = userMapper.findRolesByUserId(user != null ? user.getId() : 0L)
+        List<String> roles = userMapper.findRolesByUserId(user.getId())
                 .stream().map(r -> r.getName()).collect(Collectors.toList());
 
         log.info("User logged in: {}", request.getUsername());
         return LoginResponse.builder()
                 .token(token)
                 .tokenType("Bearer")
-                .userId(user != null ? user.getId() : null)
+                .userId(user.getId())
                 .username(request.getUsername())
-                .fullName(user != null ? user.getFullName() : null)
+                .fullName(user.getFullName())
                 .roles(roles)
                 .build();
     }

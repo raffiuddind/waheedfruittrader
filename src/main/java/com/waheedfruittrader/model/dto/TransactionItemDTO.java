@@ -26,6 +26,7 @@ public class TransactionItemDTO {
 
     private String fruitName;
     private String unit;
+    private Long locationId;
 
     @NotNull(message = "Quantity is required")
     @DecimalMin(value = "0.0", inclusive = false, message = "Quantity must be positive")
